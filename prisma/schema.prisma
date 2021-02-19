@@ -65,9 +65,21 @@ model VerificationRequest {
 }
 
 model Profile {
-  id     Int    @id @default(autoincrement())
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int
-  name   String
-  phone  String
+  id             Int                @id @default(autoincrement())
+  user           User               @relation(fields: [userId], references: [id])
+  userId         Int
+  name           String
+  phone          String
+  dob            DateTime
+  nidNumber      String             @map(name: "nid_number")
+  drivingLicense String             @map(name: "driving_license")
+  contacts       EmergencyContact[]
+}
+
+model EmergencyContact {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  Profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId Int?
 }

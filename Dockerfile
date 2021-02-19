@@ -1,14 +1,15 @@
 FROM node:lts-alpine AS development
-
 WORKDIR /home/node/app
-RUN apk add curl git yarn --no-cache
+RUN apk add curl git yarn tini --no-cache
+EXPOSE 3000
 
 COPY package.json yarn.lock ./
 RUN yarn
 
 COPY . .
+RUN yarn prisma generate
 
-EXPOSE 3000
+ENTRYPOINT [ "/sbin/tini", "--" ]
 
 CMD ["yarn", "dev"]
 

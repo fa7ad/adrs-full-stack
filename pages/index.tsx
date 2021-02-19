@@ -2,21 +2,10 @@ import React from "react";
 import { GetStaticProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
-import prisma from '../lib/prisma'
+// import prisma from '../lib/prisma'
 
 export const getStaticProps: GetStaticProps = async () => {
-  const feed = await prisma.post.findMany({
-    where: {
-      published: true,
-    },
-    include: {
-      author: {
-        select: {
-          name: true,
-        },
-      },
-    },
-  });
+  const feed = [];
   return {
     props: { feed },
   };
