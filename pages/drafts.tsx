@@ -14,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   const drafts = await [];
   return {
-    props: { drafts },
+    props: { drafts }
   };
 };
 
@@ -22,7 +22,7 @@ type Props = {
   drafts: PostProps[];
 };
 
-const Drafts: React.FC<Props> = (props) => {
+const Drafts: React.FC<Props> = props => {
   const [session] = useSession();
 
   if (!session) {
@@ -39,7 +39,7 @@ const Drafts: React.FC<Props> = (props) => {
       <div className="page">
         <h1>My Drafts</h1>
         <main>
-          {props.drafts.map((post) => (
+          {props.drafts.map(post => (
             <div key={post.id} className="post">
               <Post post={post} />
             </div>
