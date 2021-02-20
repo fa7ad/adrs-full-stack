@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgres"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -49,7 +49,6 @@ model User {
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
   profile       Profile?
 
-  profileId Int
   @@map(name: "users")
 }
 
@@ -67,19 +66,23 @@ model VerificationRequest {
 model Profile {
   id             Int                @id @default(autoincrement())
   user           User               @relation(fields: [userId], references: [id])
-  userId         Int
+  userId         Int                @map(name: "user_id")
   name           String
   phone          String
   dob            DateTime
   nidNumber      String             @map(name: "nid_number")
   drivingLicense String             @map(name: "driving_license")
   contacts       EmergencyContact[]
+
+  @@map(name: "profile")
 }
 
 model EmergencyContact {
   id        Int      @id @default(autoincrement())
   name      String
   phone     String
-  Profile   Profile? @relation(fields: [profileId], references: [id])
-  profileId Int?
+  profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId Int?     @map(name: "profile_id")
+
+  @@map(name: "emergency_contacts")
 }

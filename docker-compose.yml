@@ -1,10 +1,13 @@
-version: "3.7"
+version: '3.7'
 
 services:
   app:
     build:
       context: .
+      dockerfile: docker/Dockerfile
       target: development
+    env_file:
+      - .env
     ports:
       - 3000:3000
     volumes:
@@ -12,16 +15,25 @@ services:
       - node-cache:/home/node/app/node_modules
     depends_on:
       - db
+    networks:
+      - internal-net
   db:
     image: postgres:12-alpine
     restart: always
     env_file:
       - .db.env
+    expose:
+      - 5432
     ports:
       - 5432:5432
     volumes:
       - db-data:/var/lib/postgresql/data
+    networks:
+      - internal-net
 
 volumes:
   node-cache: {}
   db-data: {}
+
+networks:
+  internal-net: {}

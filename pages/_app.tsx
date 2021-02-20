@@ -1,10 +1,18 @@
-import { Provider } from "next-auth/client";
-import { AppProps } from "next/app";
+import Head from 'next/head';
+import { AppProps } from 'next/app';
+import { Provider } from 'next-auth/client';
+import { PageTitleCtx, useTitle } from 'utils/pageTitle';
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+  const titleCtx = useTitle();
   return (
     <Provider session={pageProps.session}>
-      <Component {...pageProps} />
+      <Head>
+        <title>{titleCtx[0]}</title>
+      </Head>
+      <PageTitleCtx.Provider value={titleCtx}>
+        <Component {...pageProps} />
+      </PageTitleCtx.Provider>
     </Provider>
   );
 };
