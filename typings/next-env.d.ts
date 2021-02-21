@@ -14,5 +14,5 @@ declare global {
   }
 
   type Tuple<A, B> = [A, B];
-  type Tuple<A, B, C> = [A, B, C];
+  type Tuple3<A, B, C> = [A, B, C];
 }

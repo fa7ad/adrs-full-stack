@@ -1,7 +1,9 @@
 import { NextApiHandler } from 'next';
-import NextAuth from 'next-auth';
+import NextAuth, { InitOptions } from 'next-auth';
 import Adapters from 'next-auth/adapters';
 import Providers from 'next-auth/providers';
+
+import { assocPath } from 'ramda';
 
 import prisma from 'lib/prisma';
 import { getEnv } from 'utils/getEnv';
@@ -9,7 +11,7 @@ import { getEnv } from 'utils/getEnv';
 const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
 export default authHandler;
 
-const options = {
+const options: InitOptions = {
   providers: [
     Providers.Email({
       server: {
@@ -28,5 +30,13 @@ const options = {
     })
   ],
   adapter: Adapters.Prisma.Adapter({ prisma }),
-  secret: getEnv('SECRET')
+  secret: getEnv('SECRET'),
+  callbacks: {
+    async session(session, user) {
+      return assocPath(['user', 'id'], user?.id, session);
+    }
+  },
+  pages: {
+    newUser: null
+  }
 };

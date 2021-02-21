@@ -1,49 +1,41 @@
 import React, { ReactNode } from 'react';
-import Header from './Header';
+import { makeStyles, Typography, Link } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: '1 1 0',
+    flexDirection: 'column'
+  },
+  footer: {
+    backgroundColor: theme.palette.common.white,
+    width: '100%',
+    padding: theme.spacing(2)
+  }
+}));
 
 type Props = {
   children: ReactNode;
 };
 
-const Layout: React.FC<Props> = props => (
-  <div>
-    <Header />
-    <div className='layout'>{props.children}</div>
-    <style jsx global>{`
-      html {
-        box-sizing: border-box;
-      }
+const Layout: React.FC<Props> = props => {
+  const classes = useStyles();
 
-      *,
-      *:before,
-      *:after {
-        box-sizing: inherit;
-      }
-
-      body {
-        margin: 0;
-        padding: 0;
-        font-size: 16px;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
-          'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-        background: rgba(0, 0, 0, 0.05);
-      }
-
-      input,
-      textarea {
-        font-size: 16px;
-      }
-
-      button {
-        cursor: pointer;
-      }
-    `}</style>
-    <style jsx>{`
-      .layout {
-        padding: 0 2rem;
-      }
-    `}</style>
-  </div>
-);
+  return (
+    <div className={classes.root}>
+      <div className='empty'>&nbsp;</div>
+      {props.children}
+      <Typography variant='body2' color='textSecondary' align='center' className={classes.footer}>
+        Copyright ©{' ' + new Date().getFullYear() + ' '}
+        <Link color='inherit' href='https://github.com/fa7ad'>
+          @fa7ad
+        </Link>
+        . All rights reserved.
+      </Typography>
+    </div>
+  );
+};
 
 export default Layout;

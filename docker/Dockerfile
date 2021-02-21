@@ -7,7 +7,6 @@ COPY package.json yarn.lock ./
 RUN yarn
 
 COPY . .
-RUN yarn husky install
 RUN yarn prisma generate
 
 ENTRYPOINT [ "/sbin/tini", "--" ]
