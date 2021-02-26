@@ -4,7 +4,7 @@ RUN apk add curl git yarn tini --no-cache
 EXPOSE 3000
 
 COPY package.json yarn.lock ./
-RUN yarn
+RUN yarn --network-timeout=60000
 
 COPY . .
 RUN yarn prisma generate

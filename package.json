@@ -20,7 +20,9 @@
     "start": "next start",
     "type-check": "tsc --project tsconfig.json --pretty --noEmit",
     "lint": "eslint --ext js,jsx,ts,tsx --fix",
-    "formatall": "prettier --write ."
+    "formatall": "prettier --write .",
+    "migrate:run": "prisma --preview-feature migrate deploy",
+    "migrate:gen": "prisma --preview-feature migrate dev"
   },
   "dependencies": {
     "@date-io/dayjs": "^1.0.0",

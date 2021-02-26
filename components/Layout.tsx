@@ -1,5 +1,8 @@
-import React, { ReactNode } from 'react';
-import { makeStyles, Typography, Link } from '@material-ui/core';
+import React from 'react';
+import { makeStyles } from '@material-ui/core';
+
+import NavBar from './Navbar';
+import Footer from './Footer';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -7,33 +10,26 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: '1 1 0',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    flexGrow: 1
   },
-  footer: {
-    backgroundColor: theme.palette.common.white,
+  main: {
     width: '100%',
-    padding: theme.spacing(2)
+    flexGrow: 1,
+    paddingTop: theme.spacing(8)
   }
 }));
 
-type Props = {
-  children: ReactNode;
-};
+type Props = React.PropsWithChildren<{}>;
 
 const Layout: React.FC<Props> = props => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <div className='empty'>&nbsp;</div>
-      {props.children}
-      <Typography variant='body2' color='textSecondary' align='center' className={classes.footer}>
-        Copyright ©{' ' + new Date().getFullYear() + ' '}
-        <Link color='inherit' href='https://github.com/fa7ad'>
-          @fa7ad
-        </Link>
-        . All rights reserved.
-      </Typography>
+      <NavBar />
+      <div className={classes.main}>{props.children}</div>
+      <Footer />
     </div>
   );
 };

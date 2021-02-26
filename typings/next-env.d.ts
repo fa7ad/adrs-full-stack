@@ -15,4 +15,12 @@ declare global {
 
   type Tuple<A, B> = [A, B];
   type Tuple3<A, B, C> = [A, B, C];
+
+  type Unpromise<T extends Promise<any>> = T extends Promise<infer U> ? U : never;
+
+  declare namespace CommonComponents {
+    type DrawerToggleHandler = React.EventHandler<
+      React.KeyboardEvent<HTMLDivElement> & React.MouseEvent<HTMLDivElement>
+    >;
+  }
 }

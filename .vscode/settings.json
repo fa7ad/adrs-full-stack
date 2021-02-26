@@ -5,5 +5,6 @@
     "**/.next": true,
     "**/node_modules": true,
     "**/out": true
-  }
+  },
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
