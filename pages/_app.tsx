@@ -10,6 +10,8 @@ import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import muiTheme from 'lib/muiTheme';
 import { PageTitleCtx, useTitle } from 'utils/pageTitle';
 
+import 'utils/global.css';
+
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const titleCtx = useTitle();
 
