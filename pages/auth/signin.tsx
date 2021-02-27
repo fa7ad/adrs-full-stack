@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { NextPageContext } from 'next';
 import { csrfToken, providers, signIn } from 'next-auth/client';
-import { Button, Container, makeStyles, Paper, TextField, Grid, Typography } from '@material-ui/core';
+import { Button, makeStyles, Paper, TextField, Grid, Typography } from '@material-ui/core';
 
 import { compose, map, ValueOfRecord, values } from 'ramda';
 
@@ -39,7 +39,7 @@ const makeProviderLoginButtons: (provs: AuthProviders) => JSX.Element[] = compos
     ) : (
       <Grid item key={provider.name}>
         <Button onClick={handleSignIn(provider.id)} variant='contained' color='primary' size='large' fullWidth>
-          Authenticate using {provider.name} account
+          Use {provider.name} account
         </Button>
       </Grid>
     )
@@ -50,36 +50,34 @@ const makeProviderLoginButtons: (provs: AuthProviders) => JSX.Element[] = compos
 function SignIn({ providers, csrfToken }: Props) {
   const classes = useStyles();
 
-  usePageTitleEffect('Sign In');
+  usePageTitleEffect('Authentication');
 
   return (
     <Layout>
-      <Container maxWidth='sm'>
-        <Paper className={classes.root}>
-          <Grid container direction='column' spacing={1}>
-            <Grid item>
-              <Typography component='h1' variant='h5' align='center'>
-                Identify Yourself
-              </Typography>
-            </Grid>
-            <Grid item>
-              <form method='POST' action='/api/auth/signin/email' className={classes.form}>
-                <input name='csrfToken' type='hidden' value={csrfToken || ''} />
-                <TextField name='email' label='Email Address' variant='outlined' required type='email' />
-                <Button variant='contained' color='secondary' type='submit' size='large'>
-                  Authenticate using Email
-                </Button>
-              </form>
-            </Grid>
-            <Grid item>
-              <Typography variant='body2' align='center'>
-                &mdash; or &mdash;
-              </Typography>
-            </Grid>
-            {makeProviderLoginButtons(providers ?? {})}
+      <Paper className={classes.root}>
+        <Grid container direction='column' spacing={1}>
+          <Grid item>
+            <Typography component='h1' variant='h5' align='center'>
+              Sign In / Sign Up
+            </Typography>
           </Grid>
-        </Paper>
-      </Container>
+          <Grid item>
+            <form method='POST' action='/api/auth/signin/email' className={classes.form}>
+              <input name='csrfToken' type='hidden' value={csrfToken || ''} />
+              <TextField name='email' label='Email Address' variant='outlined' required type='email' />
+              <Button variant='contained' color='secondary' type='submit' size='large'>
+                Use Email
+              </Button>
+            </form>
+          </Grid>
+          <Grid item>
+            <Typography variant='body2' align='center'>
+              &mdash; or &mdash;
+            </Typography>
+          </Grid>
+          {makeProviderLoginButtons(providers ?? {})}
+        </Grid>
+      </Paper>
     </Layout>
   );
 }

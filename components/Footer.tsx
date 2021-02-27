@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 export default function Footer() {
   const classes = useStyles();
   return (
-    <AppBar variant='outlined' color='transparent' position='fixed' component='footer' className={classes.footer}>
+    <AppBar variant='outlined' color='inherit' position='fixed' component='footer' className={classes.footer}>
       <Typography variant='body2' color='textSecondary' align='center'>
         Copyright ©{' ' + new Date().getFullYear() + ' '}
         <Link color='inherit' href='https://github.com/fa7ad'>

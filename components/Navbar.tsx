@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 
 import { Menu as MenuIcon, AccountCircle } from '@material-ui/icons';
@@ -13,7 +12,9 @@ import {
   Typography,
   makeStyles,
   SwipeableDrawer,
-  PopoverOrigin
+  PopoverOrigin,
+  Hidden,
+  Button
 } from '@material-ui/core';
 
 import NavList from './NavList';
@@ -28,11 +29,18 @@ export const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1
+  },
+  menuItemLink: {
+    '& > a': {
+      textDecoration: 'none',
+      color: 'inherit'
+    }
   }
 }));
 
+const menuOrigin: PopoverOrigin = { vertical: 'top', horizontal: 'right' };
+
 const NavBar = () => {
-  const router = useRouter();
   const classes = useStyles();
   const [, title] = usePageTitle();
   const [session] = useSession();
@@ -42,30 +50,13 @@ const NavBar = () => {
   const open = Boolean(anchorEl);
   const auth = Boolean(session);
 
-  const handleMenu: React.ReactEventHandler<HTMLButtonElement> = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const goHome = () => {
-    router.push(auth ? '/main' : '/');
-  };
-
-  const toggleDrawerClicked: React.ReactEventHandler<HTMLButtonElement> = () => {
-    setDrawerOpen(p => !p);
-  };
+  const handleClose = () => setAnchorEl(null);
+  const handleMenu: React.ReactEventHandler<HTMLButtonElement> = event => setAnchorEl(event.currentTarget);
+  const toggleDrawerClicked: React.ReactEventHandler<HTMLButtonElement> = () => setDrawerOpen(p => !p);
 
   const toggleDrawer: (isDrawerOpen: boolean) => CommonComponents.DrawerToggleHandler = isDrawerOpen => event => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) return;
+    if (event?.type === 'keydown' && (event?.key === 'Tab' || event?.key === 'Shift')) return;
     setDrawerOpen(isDrawerOpen);
-  };
-
-  const menuOrigin: PopoverOrigin = {
-    vertical: 'top',
-    horizontal: 'right'
   };
 
   return (
@@ -83,12 +74,13 @@ const NavBar = () => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant='h6' className={classes.title} onClick={goHome}>
+        <Typography variant='h6' className={classes.title}>
           {title}
         </Typography>
-        {auth && (
+        {auth ? (
           <div>
-            <IconButton
+            <Button
+              variant='text'
               aria-label='account of current user'
               aria-controls='menu-appbar'
               aria-haspopup='true'
@@ -96,7 +88,8 @@ const NavBar = () => {
               color='inherit'
             >
               <AccountCircle />
-            </IconButton>
+              <Hidden mdDown>&nbsp; {session?.user?.name}</Hidden>
+            </Button>
             <Menu
               id='menu-appbar'
               anchorEl={anchorEl}
@@ -107,17 +100,33 @@ const NavBar = () => {
               open={open}
               keepMounted
             >
-              <Link href='/profile/edit'>
-                <MenuItem>Edit Profile</MenuItem>
-              </Link>
-              <Link href='/contacts'>
-                <MenuItem>Emergency Contacts</MenuItem>
-              </Link>
-              <Link href='/auth/logout'>
-                <MenuItem>Logout</MenuItem>
-              </Link>
+              <MenuItem className={classes.menuItemLink}>
+                <Link href='/profile/edit'>Edit Profile</Link>
+              </MenuItem>
+              <MenuItem className={classes.menuItemLink}>
+                <Link href='/contacts'>Emergency Contacts</Link>
+              </MenuItem>
+              <MenuItem className={classes.menuItemLink}>
+                <Link href='/auth/signout'>Logout</Link>
+              </MenuItem>
             </Menu>
           </div>
+        ) : (
+          <Link href='/auth/signin'>
+            <>
+              <Hidden mdUp>
+                <IconButton aria-label='Sign in / Sign up' aria-controls='menu-appbar' color='inherit'>
+                  <AccountCircle />
+                </IconButton>
+              </Hidden>
+              <Hidden mdDown>
+                <Button variant='text' color='inherit'>
+                  <AccountCircle />
+                  &nbsp; Sign In
+                </Button>
+              </Hidden>
+            </>
+          </Link>
         )}
       </Toolbar>
     </AppBar>

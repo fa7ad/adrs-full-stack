@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import { Container, makeStyles } from '@material-ui/core';
 
 import NavBar from './Navbar';
 import Footer from './Footer';
@@ -16,11 +16,16 @@ const useStyles = makeStyles(theme => ({
   main: {
     width: '100%',
     flexGrow: 1,
-    paddingTop: theme.spacing(8)
+    padding: theme.spacing(8, 0),
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   }
 }));
 
-type Props = React.PropsWithChildren<{}>;
+type Props = {
+  children: React.ReactNode;
+};
 
 const Layout: React.FC<Props> = props => {
   const classes = useStyles();
@@ -28,7 +33,11 @@ const Layout: React.FC<Props> = props => {
   return (
     <div className={classes.root}>
       <NavBar />
-      <div className={classes.main}>{props.children}</div>
+      <div className={classes.main}>
+        <Container maxWidth='sm'>
+          <>{props.children}</>
+        </Container>
+      </div>
       <Footer />
     </div>
   );

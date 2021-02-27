@@ -7,9 +7,13 @@
     "terminal.integrated.shell.linux": null
   },
   "extensions": [],
-  "forwardPorts": [3000, 5432]
+  "forwardPorts": [3000, 5432],
   // "runServices": [],
   // "shutdownAction": "none",
   // "postCreateCommand": "apt-get update && apt-get install -y curl",
-  // "remoteUser": "vscode"
+  // "remoteUser": "vscode",
+  "workspaceMount": "source=${localWorkspaceFolder}/,target=/home/node/app,type=bind,consistency=cached"
+  // "mounts": [
+  //   "source=/home/fahad/vs-workspace/adrs-full-stack,target=/workspace,type=bind,consistency=cached"
+  // ]
 }

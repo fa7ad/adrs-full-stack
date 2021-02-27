@@ -8,9 +8,6 @@ import { assocPath } from 'ramda';
 import prisma from 'lib/prisma';
 import { getEnv } from 'utils/getEnv';
 
-const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
-export default authHandler;
-
 const options: InitOptions = {
   providers: [
     Providers.Email({
@@ -40,3 +37,6 @@ const options: InitOptions = {
     newUser: null
   }
 };
+
+const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
+export default authHandler;
