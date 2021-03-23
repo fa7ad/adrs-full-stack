@@ -11,14 +11,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function Footer() {
   const classes = useStyles();
+  const year = new Date().getFullYear();
   return (
     <AppBar variant='outlined' color='inherit' position='fixed' component='footer' className={classes.footer}>
       <Typography variant='body2' color='textSecondary' align='center'>
-        Copyright ©{' ' + new Date().getFullYear() + ' '}
+        Copyright ©{` ${year} `}
         <Link color='inherit' href='https://github.com/fa7ad'>
           @fa7ad
         </Link>
-        .All rights reserved.
+        . All rights reserved.
       </Typography>
     </AppBar>
   );

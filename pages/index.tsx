@@ -1,39 +1,28 @@
+import { NextPageContext } from 'next';
 import { useSession } from 'next-auth/client';
 import { makeStyles, Paper } from '@material-ui/core';
 
 import Layout from 'components/Layout';
 import LandingPage from 'components/LandingPage';
-import { usePageTitleEffect } from 'utils/pageTitle';
-
-type Props = {};
+import UserHome from 'components/UserHome';
 
 const useStyles = makeStyles(theme => ({
-  logoImage: {
-    maxWidth: '10em',
-    margin: theme.spacing(0, 'auto', 2, 'auto')
-  },
   root: {
     padding: theme.spacing(4, 2)
-  },
-  heroButtons: {
-    marginTop: theme.spacing(4),
-    textAlign: 'center'
   }
 }));
 
-const Blog: React.FC<Props> = props => {
+function Home() {
   const classes = useStyles();
   const [session] = useSession();
 
   const auth = Boolean(session);
 
-  usePageTitleEffect('Home');
-
   return (
-    <Layout>
-      <Paper className={classes.root}>{auth ? null : <LandingPage classes={classes} />}</Paper>
+    <Layout title='Home'>
+      <Paper className={classes.root}>{auth ? <UserHome /> : <LandingPage />}</Paper>
     </Layout>
   );
-};
+}
 
-export default Blog;
+export default Home;

@@ -19,30 +19,30 @@ const NavList: React.FC<NavListProps> = ({ toggleDrawer, auth }) => {
   return (
     <div className={classes.list} role='presentation' onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
       <List>
-        <ListItem button>
-          <ListItemIcon>{auth ? <SettingsRemote /> : <Home />}</ListItemIcon>
-          <Link href='/'>
+        <Link href='/'>
+          <ListItem button>
+            <ListItemIcon>{auth ? <SettingsRemote /> : <Home />}</ListItemIcon>
             <ListItemText primary='Home' />
-          </Link>
-        </ListItem>
+          </ListItem>
+        </Link>
         {auth ? (
           <>
-            <ListItem button>
-              <ListItemIcon>
-                <Edit />
-              </ListItemIcon>
-              <Link href='/profile/edit'>
+            <Link href='/profile/edit'>
+              <ListItem button>
+                <ListItemIcon>
+                  <Edit />
+                </ListItemIcon>
                 <ListItemText primary='Edit Profile' />
-              </Link>
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <People />
-              </ListItemIcon>
-              <Link href='/contacts'>
+              </ListItem>
+            </Link>
+            <Link href='/contacts'>
+              <ListItem button>
+                <ListItemIcon>
+                  <People />
+                </ListItemIcon>
                 <ListItemText primary='Emergency Contacts' />
-              </Link>
-            </ListItem>
+              </ListItem>
+            </Link>
           </>
         ) : null}
       </List>

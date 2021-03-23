@@ -18,7 +18,6 @@ import {
 } from '@material-ui/core';
 
 import NavList from './NavList';
-import { usePageTitle } from 'utils/pageTitle';
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -31,18 +30,26 @@ export const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   menuItemLink: {
+    padding: 0,
     '& > a': {
       textDecoration: 'none',
-      color: 'inherit'
+      color: 'inherit',
+      display: 'block',
+      width: '100%',
+      height: '100%',
+      padding: theme.spacing(0.75, 1)
     }
   }
 }));
 
+type NavProps = React.PropsWithChildren<{
+  title: string;
+}>;
+
 const menuOrigin: PopoverOrigin = { vertical: 'top', horizontal: 'right' };
 
-const NavBar = () => {
+const NavBar = ({ title }: NavProps) => {
   const classes = useStyles();
-  const [, title] = usePageTitle();
   const [session] = useSession();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -107,25 +114,16 @@ const NavBar = () => {
                 <Link href='/contacts'>Emergency Contacts</Link>
               </MenuItem>
               <MenuItem className={classes.menuItemLink}>
-                <Link href='/auth/signout'>Logout</Link>
+                <Link href='/auth/signout'>Sign out</Link>
               </MenuItem>
             </Menu>
           </div>
         ) : (
           <Link href='/auth/signin'>
-            <>
-              <Hidden mdUp>
-                <IconButton aria-label='Sign in / Sign up' aria-controls='menu-appbar' color='inherit'>
-                  <AccountCircle />
-                </IconButton>
-              </Hidden>
-              <Hidden mdDown>
-                <Button variant='text' color='inherit'>
-                  <AccountCircle />
-                  &nbsp; Sign In
-                </Button>
-              </Hidden>
-            </>
+            <Button variant='text' color='inherit'>
+              <AccountCircle />
+              <Hidden mdDown>&nbsp; Sign In</Hidden>
+            </Button>
           </Link>
         )}
       </Toolbar>

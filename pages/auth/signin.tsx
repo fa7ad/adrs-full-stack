@@ -1,12 +1,12 @@
 import { Fragment } from 'react';
 import { NextPageContext } from 'next';
 import { csrfToken, providers, signIn } from 'next-auth/client';
-import { Button, makeStyles, Paper, TextField, Grid, Typography } from '@material-ui/core';
-
 import { compose, map, ValueOfRecord, values } from 'ramda';
 
+import { Button, makeStyles, Paper, TextField, Grid, Typography } from '@material-ui/core';
+
+
 import Layout from 'components/Layout';
-import { usePageTitleEffect } from 'utils/pageTitle';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,10 +50,8 @@ const makeProviderLoginButtons: (provs: AuthProviders) => JSX.Element[] = compos
 function SignIn({ providers, csrfToken }: Props) {
   const classes = useStyles();
 
-  usePageTitleEffect('Authentication');
-
   return (
-    <Layout>
+    <Layout title='Authentication'>
       <Paper className={classes.root}>
         <Grid container direction='column' spacing={1}>
           <Grid item>

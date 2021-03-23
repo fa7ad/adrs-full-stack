@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import { Container, makeStyles } from '@material-ui/core';
 
 import NavBar from './Navbar';
@@ -24,22 +25,30 @@ const useStyles = makeStyles(theme => ({
 }));
 
 type Props = {
-  children: React.ReactNode;
+  title?: string;
 };
 
 const Layout: React.FC<Props> = props => {
   const classes = useStyles();
 
+  const title = props.title || 'Home';
+
   return (
-    <div className={classes.root}>
-      <NavBar />
-      <div className={classes.main}>
-        <Container maxWidth='sm'>
-          <>{props.children}</>
-        </Container>
+    <>
+      <Head>
+        <title>{title} | ADRS Next</title>
+      </Head>
+
+      <div className={classes.root}>
+        <NavBar title={title} />
+        <div className={classes.main}>
+          <Container maxWidth='sm'>
+            <>{props?.children || 'Unknown Error'}</>
+          </Container>
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
 };
 

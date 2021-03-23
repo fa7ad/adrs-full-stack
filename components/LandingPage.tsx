@@ -1,12 +1,20 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button, Typography } from '@material-ui/core';
+import { Button, makeStyles, Typography } from '@material-ui/core';
 
-type Props = {
-  classes: Record<'logoImage' | 'heroButtons', string>;
-};
+const useStyles = makeStyles(theme => ({
+  logoImage: {
+    maxWidth: '10em',
+    margin: theme.spacing(0, 'auto', 2, 'auto')
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+    textAlign: 'center'
+  }
+}))
 
-export default function LandingPage({ classes }: Props) {
+export default function LandingPage() {
+  const classes = useStyles();
   return (
     <>
       <div className={classes.logoImage}>

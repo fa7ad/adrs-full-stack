@@ -18,6 +18,14 @@ declare global {
 
   type Unpromise<T extends Promise<any>> = T extends Promise<infer U> ? U : never;
 
+  type ValueOf<T extends Record<any, any>> = T extends Record<infer U, infer V> ? V : never;
+  type KeyOf<T extends Record<any, any>> = T extends Record<infer U, infer V> ? U : never;
+
+  type SelectOption = {
+    label: string;
+    value: string;
+  };
+
   declare namespace CommonComponents {
     type DrawerToggleHandler = React.EventHandler<
       React.KeyboardEvent<HTMLDivElement> & React.MouseEvent<HTMLDivElement>

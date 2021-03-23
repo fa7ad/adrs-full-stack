@@ -31,10 +31,15 @@ const options: InitOptions = {
   callbacks: {
     async session(session, user) {
       return assocPath(['user', 'id'], user?.id, session);
+    },
+    async redirect(_, baseUrl) {
+      return baseUrl;
     }
   },
   pages: {
-    newUser: null
+    newUser: null,
+    signIn: '/auth/signin',
+    signOut: '/auth/signout'
   }
 };
 

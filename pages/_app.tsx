@@ -8,13 +8,10 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 
 import muiTheme from 'lib/muiTheme';
-import { PageTitleCtx, useTitle } from 'utils/pageTitle';
 
 import 'utils/global.css';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
-  const titleCtx = useTitle();
-
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     jssStyles?.parentElement?.removeChild(jssStyles);
@@ -23,16 +20,13 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <Head>
-        <title>{titleCtx[0]}</title>
         <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width' />
       </Head>
       <Provider session={pageProps.session}>
         <ThemeProvider theme={muiTheme}>
           <MuiPickersUtilsProvider utils={DayjsUtils}>
             <CssBaseline />
-            <PageTitleCtx.Provider value={titleCtx}>
-              <Component {...pageProps} />
-            </PageTitleCtx.Provider>
+            <Component {...pageProps} />
           </MuiPickersUtilsProvider>
         </ThemeProvider>
       </Provider>
