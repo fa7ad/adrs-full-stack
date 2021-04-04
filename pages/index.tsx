@@ -1,4 +1,3 @@
-import { NextPageContext } from 'next';
 import { useSession } from 'next-auth/client';
 import { makeStyles, Paper } from '@material-ui/core';
 

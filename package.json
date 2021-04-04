@@ -25,15 +25,19 @@
     "migrate:gen": "prisma --preview-feature migrate dev"
   },
   "dependencies": {
-    "@date-io/dayjs": "^1.0.0",
+    "@date-io/dayjs": "1.x",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
-    "@material-ui/pickers": "~3.2.10",
+    "@material-ui/pickers": "^3.3.10",
     "@prisma/client": "2.17.0",
     "@turf/nearest-point": "^6.3.0",
+    "axios": "^0.21.1",
     "cors": "^2.8.5",
-    "dayjs": "~1.10.4",
+    "dayjs": "^1.10.4",
+    "formik": "^2.2.6",
+    "formik-material-ui": "^3.0.1",
+    "formik-material-ui-pickers": "^0.0.12",
     "next": "10.0.7",
     "next-auth": "^3.5.0",
     "pg": "^8.5.1",
@@ -44,7 +48,8 @@
     "react-markdown": "5.0.3",
     "sanitize-html": "^2.3.2",
     "sweetalert2": "^10.15.6",
-    "sweetalert2-react-content": "^3.3.1"
+    "sweetalert2-react-content": "^3.3.1",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
