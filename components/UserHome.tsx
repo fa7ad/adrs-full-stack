@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -22,6 +22,9 @@ import useGeolocation from 'hooks/useGeolocation';
 
 import safeRenderHtml from 'utils/safeRender';
 import { createEmergencyAlert } from 'utils/createEmergencyAlert';
+import { NextPageContext } from 'next';
+import fromApi from 'lib/fromApi';
+import { map } from 'ramda';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -48,7 +51,8 @@ const useStyles = makeStyles(theme => ({
   },
   profile: {
     height: '100%',
-    padding: theme.spacing(1)
+    padding: theme.spacing(1),
+    position: 'relative'
   },
   editIcon: {
     position: 'absolute',
@@ -64,6 +68,14 @@ function UserHome() {
   const { area, setArea, areas, policeInfo, phoneNums } = useDmpData();
   const showAccidentAlert = createEmergencyAlert(phoneNums);
   const { position, supported, trigger } = useGeolocation();
+  const [profile, setProfile] = useState({
+    name: '',
+    phone: '',
+    drivingLicense: '',
+    nidNumber: '',
+    dob: undefined as string | undefined
+  });
+  const [contacts, setContacts] = useState<ExistingContact[]>([]);
 
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === '+') showAccidentAlert();
@@ -86,21 +98,38 @@ function UserHome() {
     import('utils/findHelp').then(m => m.findHelp(position)).then(data => setArea(data.dmpId));
   }, [position]);
 
+  useEffect(() => {
+    (async () => {
+      const profRes = await fromApi().get('/api/profile');
+      setProfile(profRes?.data?.profile);
+    })();
+    (async () => {
+      const contRes = await fromApi().get('/api/contacts');
+      setContacts(contRes?.data?.contacts);
+    })();
+  }, [setProfile, setContacts]);
+
   return (
     <>
       <Grid container spacing={2} className={classes.infoGrid}>
-        <Grid item xs={6} component='section'>
+        <Grid item sm={6} xs={12} component='section'>
           <Paper variant='outlined' className={classes.profile}>
-            {/* <img className='profile__picture' src={personImg} alt='' /> */}
+            <Link href='/profile'>
+              <IconButton className={classes.editIcon}>
+                <EditIcon />
+              </IconButton>
+            </Link>
             <Typography component='p' variant='body2'>
-              <b>Name: </b>John Doe
+              <b>Name: </b>
+              {profile.name}
             </Typography>
             <Typography component='p' variant='body2'>
-              <b>Driving License Number: </b>9126189361
+              <b>Driving License Number: </b>
+              {profile.drivingLicense}
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={6} component='section'>
+        <Grid item sm={6} xs={12} component='section'>
           <Paper variant='outlined' className={classes.emergency}>
             <Link href='/contacts'>
               <IconButton className={classes.editIcon}>
@@ -110,12 +139,14 @@ function UserHome() {
             <Typography component='p' variant='body1'>
               Emergency Contact
             </Typography>
-            <Typography component='p' variant='body2'>
-              <b>Name: </b>Jane Doe
-            </Typography>
-            <Typography component='p' variant='body2'>
-              <b>Phone Number: </b> +8801701227057
-            </Typography>
+            {map(
+              cont => (
+                <Typography component='p' variant='body2' key={cont.phone}>
+                  <b>{cont.name}</b> // {cont.phone}
+                </Typography>
+              ),
+              contacts
+            )}
           </Paper>
         </Grid>
       </Grid>

@@ -41,7 +41,8 @@ export default new ApiRoute()
     } catch (error) {
       if (error instanceof PrismaClientValidationError) {
         throw new HTTPError(400, error.message.replace(/Invalid.*?invocation:/i, '').trim());
-      } else throw error;
+      }
+      throw error;
     }
   })
   .get(async (req, res) => {

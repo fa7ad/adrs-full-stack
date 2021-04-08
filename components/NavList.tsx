@@ -27,7 +27,7 @@ const NavList: React.FC<NavListProps> = ({ toggleDrawer, auth }) => {
         </Link>
         {auth ? (
           <>
-            <Link href='/profile/edit'>
+            <Link href='/profile'>
               <ListItem button>
                 <ListItemIcon>
                   <Edit />

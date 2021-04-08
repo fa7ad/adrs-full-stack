@@ -7,15 +7,14 @@ import UserHome from 'components/UserHome';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(4, 2)
+    padding: props => ((props as any).auth ? theme.spacing(0, 2, 2, 2) : theme.spacing(4, 2))
   }
 }));
 
 function Home() {
-  const classes = useStyles();
   const [session] = useSession();
-
   const auth = Boolean(session);
+  const classes = useStyles({ auth });
 
   return (
     <Layout title='Home'>

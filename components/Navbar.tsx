@@ -95,7 +95,7 @@ const NavBar = ({ title }: NavProps) => {
               color='inherit'
             >
               <AccountCircle />
-              <Hidden mdDown>&nbsp; {session?.user?.name}</Hidden>
+              <Hidden smDown>&nbsp; {session?.user?.name}</Hidden>
             </Button>
             <Menu
               id='menu-appbar'
@@ -108,7 +108,7 @@ const NavBar = ({ title }: NavProps) => {
               keepMounted
             >
               <MenuItem className={classes.menuItemLink}>
-                <Link href='/profile/edit'>Edit Profile</Link>
+                <Link href='/profile'>Edit Profile</Link>
               </MenuItem>
               <MenuItem className={classes.menuItemLink}>
                 <Link href='/contacts'>Emergency Contacts</Link>
@@ -122,7 +122,7 @@ const NavBar = ({ title }: NavProps) => {
           <Link href='/auth/signin'>
             <Button variant='text' color='inherit'>
               <AccountCircle />
-              <Hidden mdDown>&nbsp; Sign In</Hidden>
+              <Hidden smDown>&nbsp; Sign In</Hidden>
             </Button>
           </Link>
         )}

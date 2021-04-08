@@ -2,8 +2,9 @@ import { useState } from 'react';
 
 export default function useGeolocation() {
   const [position, setLocation] = useState<Tuple<number, number> | null>(null);
-  const supported = !!navigator.geolocation;
+  let supported = true;
   const trigger = () => {
+    supported = !!navigator.geolocation;
     if (!supported) {
       console.warn('[useGeolocation]', "This browser doesn't support Geolocation APIs");
       return;

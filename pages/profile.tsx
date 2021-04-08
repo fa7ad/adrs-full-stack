@@ -153,10 +153,11 @@ const Profile: NextPage<{} & Unpromise<ReturnType<typeof getInitialProps>>> = fu
 
 export async function getInitialProps(ctx: NextPageContext) {
   try {
-    const response = await fromApi(ctx).get(process.env.NEXTAUTH_URL + '/api/profile');
+    const response = await fromApi(ctx).get('/api/profile');
     const profile: ProfileData = response.data?.profile ?? {};
     return { profile };
   } catch (error) {
+    console.log({error})
     const { res } = ctx;
     const targetURL = '/auth/signin';
     if (res) {
@@ -164,7 +165,7 @@ export async function getInitialProps(ctx: NextPageContext) {
       res.end();
     } else {
       window.location.href = targetURL;
-      await new Promise(resolve => {});
+      return Promise.resolve({ profile: {} });
     }
     return { profile: {} };
   }

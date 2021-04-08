@@ -26,6 +26,19 @@ declare global {
     value: string;
   };
 
+  interface ContactsData {
+    name: string;
+    phone: string;
+  }
+
+  interface ExistingContact extends ContactsData {
+    id: number;
+  }
+  interface ContactState extends ExistingContact {
+    editing: boolean;
+  }
+
+  type Identity<T> = (x: T) => T;
   declare namespace CommonComponents {
     type DrawerToggleHandler = React.EventHandler<
       React.KeyboardEvent<HTMLDivElement> & React.MouseEvent<HTMLDivElement>
