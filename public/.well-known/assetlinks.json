@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.mildlyboring.adrs_next.twa",
+      "sha256_cert_fingerprints": [
+        "61:19:AF:84:9D:A3:42:7D:C1:A3:22:1F:26:93:68:67:72:54:2E:F4:91:4A:C6:7A:0C:89:AD:2A:9A:6C:F4:37"
+      ]
+    }
+  }
+]
