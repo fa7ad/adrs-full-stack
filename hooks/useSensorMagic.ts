@@ -25,13 +25,16 @@ export function useSensorMagic(callback: () => unknown) {
       gyro.current.addEventListener('reading', () => {
         const sens = gyro.current as Gyroscope;
         if (!sens.x || !sens.y || !sens.z) return;
-        const { x, y, z } = sens;
+        const { x, y } = sens;
         const [roll, pitch] = rp.current;
-        const [r, p] = (rp.current = [roll + x / 28, pitch - z / 28]);
+        const [r, p] = (rp.current = [roll + x / 28, pitch - y / 28]);
         pcRoll.current = rollkf.filter({ previousCorrected: pcRoll.current, observation: [r] });
-        if (Math.abs(pcRoll.current.mean[0]) >= 46) callback();
         pcPitch.current = pitchkf.filter({ previousCorrected: pcPitch.current, observation: [p] });
-        if (Math.abs(pcPitch.current.mean[0]) >= 46) callback();
+        if (Math.abs(pcRoll.current.mean[0]) >= 46 || Math.abs(pcPitch.current.mean[0]) >= 46) {
+          pcPitch.current = undefined;
+          pcRoll.current = undefined;
+          callback();
+        }
       });
       gyro.current?.start();
     }
@@ -56,9 +59,12 @@ export function useSensorMagic(callback: () => unknown) {
         const r = (Math.atan2(x, Math.sqrt(y * y + z * z)) * 180) / Math.PI;
         const p = (Math.atan2(y, Math.sqrt(x * x + z * z)) * 180) / Math.PI;
         pcRoll.current = rollkf.filter({ previousCorrected: pcRoll.current, observation: [r] });
-        if (Math.abs(pcRoll.current.mean[0]) >= 46) callback();
         pcPitch.current = pitchkf.filter({ previousCorrected: pcPitch.current, observation: [p] });
-        if (Math.abs(pcPitch.current.mean[0]) >= 46) callback();
+        if (Math.abs(pcRoll.current.mean[0]) >= 46 || Math.abs(pcPitch.current.mean[0]) >= 46) {
+          pcPitch.current = undefined;
+          pcRoll.current = undefined;
+          callback();
+        }
       });
       accel.current?.start();
     }
