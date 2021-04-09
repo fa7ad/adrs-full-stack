@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
   Box,
@@ -22,7 +23,6 @@ import useGeolocation from 'hooks/useGeolocation';
 
 import safeRenderHtml from 'utils/safeRender';
 import { createEmergencyAlert } from 'utils/createEmergencyAlert';
-import { NextPageContext } from 'next';
 import fromApi from 'lib/fromApi';
 import { map } from 'ramda';
 
@@ -76,6 +76,7 @@ function UserHome() {
     dob: undefined as string | undefined
   });
   const [contacts, setContacts] = useState<ExistingContact[]>([]);
+  const router = useRouter();
 
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === '+') showAccidentAlert();
@@ -101,6 +102,10 @@ function UserHome() {
   useEffect(() => {
     (async () => {
       const profRes = await fromApi().get('/api/profile');
+      if (profRes?.data?.profile === null) {
+        router.push('/profile');
+        return;
+      }
       setProfile(profRes?.data?.profile);
     })();
     (async () => {

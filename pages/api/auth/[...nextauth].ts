@@ -37,7 +37,7 @@ const options: InitOptions = {
     }
   },
   pages: {
-    newUser: null,
+    newUser: '/profile',
     signIn: '/auth/signin',
     signOut: '/auth/signout'
   }
