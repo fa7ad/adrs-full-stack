@@ -262,7 +262,7 @@ function setNewContactEditing(setFieldValue: FormikFieldValueSetter) {
         const [contact]: ContactData[] = await futureNavigator.contacts.select(['name', 'tel'], {
           multiple: false
         });
-        setFieldValue('newContact.name', contact?.name ?? '');
+        setFieldValue('newContact.name', contact?.name?.[0] ?? '');
         setFieldValue('newContact.phone', contact?.tel?.[0]?.replace(/[^0-9+]/g, '') ?? '');
       } catch (error) {
         console.log({ error });
