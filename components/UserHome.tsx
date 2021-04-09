@@ -25,6 +25,7 @@ import safeRenderHtml from 'utils/safeRender';
 import { createEmergencyAlert } from 'utils/createEmergencyAlert';
 import fromApi from 'lib/fromApi';
 import { map } from 'ramda';
+import { useSensorMagic } from 'hooks/useSensorMagic';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -67,7 +68,12 @@ function UserHome() {
   const classes = useStyles();
   const { area, setArea, areas, policeInfo, phoneNums } = useDmpData();
   const showAccidentAlert = createEmergencyAlert(phoneNums);
-  const { position, supported, trigger } = useGeolocation();
+  const {
+    position: geoPos,
+    supported: geoSupported,
+    trigger: triggerGeo,
+    requestPermission: requestGeoPermission
+  } = useGeolocation();
   const [profile, setProfile] = useState({
     name: '',
     phone: '',
@@ -76,6 +82,7 @@ function UserHome() {
     dob: undefined as string | undefined
   });
   const [contacts, setContacts] = useState<ExistingContact[]>([]);
+  const { requestPermissions: requestSensorPermissions } = useSensorMagic(showAccidentAlert);
   const router = useRouter();
 
   const handleKeyPress = (e: KeyboardEvent) => {
@@ -95,9 +102,9 @@ function UserHome() {
   }, [handleKeyPress]);
 
   useEffect(() => {
-    if (!position) return;
-    import('utils/findHelp').then(m => m.findHelp(position)).then(data => setArea(data.dmpId));
-  }, [position]);
+    if (!geoPos) return;
+    import('utils/findHelp').then(m => m.findHelp(geoPos)).then(data => setArea(data.dmpId));
+  }, [geoPos]);
 
   useEffect(() => {
     (async () => {
@@ -108,11 +115,27 @@ function UserHome() {
       }
       setProfile(profRes?.data?.profile);
     })();
+  }, [setProfile]);
+
+  useEffect(() => {
     (async () => {
       const contRes = await fromApi().get('/api/contacts');
       setContacts(contRes?.data?.contacts);
     })();
-  }, [setProfile, setContacts]);
+  }, [setContacts]);
+
+  useEffect(() => {
+    requestGeoPermission().then(permitted => {
+      if (permitted) return triggerGeo();
+      alert('GPS access is required for this app!');
+    });
+  }, [triggerGeo, requestGeoPermission]);
+  useEffect(() => {
+    requestSensorPermissions().then(permitted => {
+      if (permitted.accel && permitted.gyro) return;
+      alert('Gyroscope and Accelerometer access are required for this app!');
+    });
+  }, [requestSensorPermissions]);
 
   return (
     <>
@@ -175,8 +198,8 @@ function UserHome() {
             ))}
           </Select>
         </FormControl>
-        {supported && (
-          <Button variant='outlined' color='primary' size='large' onClick={trigger}>
+        {geoSupported && (
+          <Button variant='outlined' color='primary' size='large' onClick={triggerGeo}>
             <ExploreIcon />
           </Button>
         )}

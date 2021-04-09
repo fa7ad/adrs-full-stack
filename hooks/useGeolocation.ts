@@ -15,5 +15,15 @@ export default function useGeolocation() {
     );
   };
 
-  return { position, trigger, supported };
+  const requestPermission = async () => {
+    supported = !!navigator.geolocation;
+    if (!supported) {
+      console.warn('[useGeolocation]', "This browser doesn't support Geolocation APIs");
+      return false;
+    }
+    const result = await navigator.permissions.query({ name: 'geolocation' });
+    return result.state === 'granted' || result.state === 'prompt';
+  };
+
+  return { position, trigger, supported, requestPermission };
 }

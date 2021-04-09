@@ -7,3 +7,7 @@ html {
   display: flex;
   flex-direction: column;
 }
+pwa-update,
+pwa-update * {
+  display: none;
+}
