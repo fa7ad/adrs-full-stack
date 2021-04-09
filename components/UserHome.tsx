@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
@@ -67,7 +67,8 @@ const useStyles = makeStyles(theme => ({
 function UserHome() {
   const classes = useStyles();
   const { area, setArea, areas, policeInfo, phoneNums } = useDmpData();
-  const showAccidentAlert = createEmergencyAlert(phoneNums);
+  const alertVisible = useRef(false);
+  const showAccidentAlert = createEmergencyAlert(phoneNums, alertVisible);
   const {
     position: geoPos,
     supported: geoSupported,
