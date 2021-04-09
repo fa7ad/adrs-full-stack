@@ -40,6 +40,7 @@
     "formik": "^2.2.6",
     "formik-material-ui": "^3.0.1",
     "formik-material-ui-pickers": "^0.0.12",
+    "isomorphic-ws": "^4.0.1",
     "kalman-filter": "^1.9.2",
     "next": "10.0.7",
     "next-auth": "^3.5.0",
@@ -53,10 +54,12 @@
     "sanitize-html": "^2.3.2",
     "sweetalert2": "^10.15.6",
     "sweetalert2-react-content": "^3.3.1",
+    "ws": "^7.4.4",
     "yup": "^0.32.9"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
+    "@types/dom-screen-wake-lock": "^1.0.0",
     "@types/geojson": "^7946.0.7",
     "@types/next-auth": "3.1.24",
     "@types/node": "^14.14.31",

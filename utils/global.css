@@ -11,3 +11,13 @@ pwa-update,
 pwa-update * {
   display: none;
 }
+
+a,
+a:link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.p-1 {
+  padding: 0.25em;
+}

@@ -1,3 +1,4 @@
+import { map } from 'ramda';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
@@ -5,6 +6,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormControlLabel,
   Grid,
   IconButton,
   InputLabel,
@@ -12,19 +14,19 @@ import {
   MenuItem,
   Paper,
   Select,
+  Switch,
   Typography
 } from '@material-ui/core';
 
 import EditIcon from '@material-ui/icons/Edit';
 import ExploreIcon from '@material-ui/icons/Explore';
 
-import { useDmpData } from 'hooks/useDmpData';
-import useGeolocation from 'hooks/useGeolocation';
-
+import fromApi from 'lib/fromApi';
 import safeRenderHtml from 'utils/safeRender';
 import { createEmergencyAlert } from 'utils/createEmergencyAlert';
-import fromApi from 'lib/fromApi';
-import { map } from 'ramda';
+
+import { useDmpData } from 'hooks/useDmpData';
+import useGeolocation from 'hooks/useGeolocation';
 import { useSensorMagic } from 'hooks/useSensorMagic';
 
 const useStyles = makeStyles(theme => ({
@@ -61,20 +63,16 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     fontSize: theme.typography.body2.fontSize,
     padding: theme.spacing(1)
+  },
+  wakelock: {
+    margin: theme.spacing(2, 0)
   }
 }));
 
 function UserHome() {
+  const router = useRouter();
   const classes = useStyles();
-  const { area, setArea, areas, policeInfo, phoneNums } = useDmpData();
-  const alertVisible = useRef(false);
-  const showAccidentAlert = createEmergencyAlert(phoneNums, alertVisible);
-  const {
-    position: geoPos,
-    supported: geoSupported,
-    trigger: triggerGeo,
-    requestPermission: requestGeoPermission
-  } = useGeolocation();
+  const lock = useRef<WakeLockSentinel>();
   const [profile, setProfile] = useState({
     name: '',
     phone: '',
@@ -82,9 +80,17 @@ function UserHome() {
     nidNumber: '',
     dob: undefined as string | undefined
   });
+  const [wakeLock, setWakeLock] = useState(false);
   const [contacts, setContacts] = useState<ExistingContact[]>([]);
+  const { area, setArea, areas, policeInfo, phoneNums } = useDmpData();
+  const {
+    position: geoPos,
+    supported: geoSupported,
+    trigger: triggerGeo,
+    requestPermission: requestGeoPermission
+  } = useGeolocation();
+  const showAccidentAlert = createEmergencyAlert(phoneNums, contacts, { trigger: triggerGeo, position: geoPos });
   const { requestPermissions: requestSensorPermissions } = useSensorMagic(showAccidentAlert);
-  const router = useRouter();
 
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === '+') showAccidentAlert();
@@ -108,21 +114,18 @@ function UserHome() {
   }, [geoPos]);
 
   useEffect(() => {
-    (async () => {
-      const profRes = await fromApi().get('/api/profile');
-      if (profRes?.data?.profile === null) {
-        router.push('/profile');
-        return;
-      }
-      setProfile(profRes?.data?.profile);
-    })();
+    fromApi()
+      .get('/api/profile')
+      .then(profRes => {
+        if (profRes?.data?.profile === null) return router.push('/profile');
+        setProfile(profRes?.data?.profile);
+      });
   }, [setProfile]);
 
   useEffect(() => {
-    (async () => {
-      const contRes = await fromApi().get('/api/contacts');
-      setContacts(contRes?.data?.contacts);
-    })();
+    fromApi()
+      .get('/api/contacts')
+      .then(contRes => setContacts(contRes?.data?.contacts));
   }, [setContacts]);
 
   useEffect(() => {
@@ -131,12 +134,32 @@ function UserHome() {
       alert('GPS access is required for this app!');
     });
   }, [triggerGeo, requestGeoPermission]);
+
   useEffect(() => {
     requestSensorPermissions().then(permitted => {
       if (permitted.accel && permitted.gyro) return;
       alert('Gyroscope and Accelerometer access are required for this app!');
     });
   }, [requestSensorPermissions]);
+
+  useEffect(() => {
+    if (!('wakeLock' in navigator)) return;
+    if (wakeLock) {
+      navigator.wakeLock.request('screen').then(lck => {
+        lock.current = lck;
+      });
+    } else {
+      lock.current?.release();
+    }
+    const wklk = lock.current;
+    return () => {
+      wklk?.release();
+    };
+  }, [wakeLock]);
+
+  const handleWakelock: React.ChangeEventHandler<HTMLInputElement> = e => {
+    setWakeLock(e.target.checked);
+  };
 
   return (
     <>
@@ -179,6 +202,7 @@ function UserHome() {
           </Paper>
         </Grid>
       </Grid>
+
       <section className={classes.location}>
         <FormControl variant='outlined' fullWidth className={classes.select}>
           <InputLabel id='area-select-label'>Area</InputLabel>
@@ -205,6 +229,14 @@ function UserHome() {
           </Button>
         )}
       </section>
+      <Grid container justify='center' className={classes.wakelock}>
+        <Grid item>
+          <FormControlLabel
+            control={<Switch onChange={handleWakelock} color='primary' />}
+            label='Enable Detection and Reporting'
+          />
+        </Grid>
+      </Grid>
       <Box component='section' className={classes.policeInfo}>
         {safeRenderHtml(policeInfo || 'Loading...')}
       </Box>

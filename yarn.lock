@@ -361,6 +361,11 @@
   resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.10.tgz#61cc8469849e5bcdd0c7044122265c39cec10cf4"
   integrity sha512-C7srjHiVG3Ey1nR6d511dtDkCEjxuN9W1HWAEjGq8kpcwmNM6JJkpC0xvabM7BXTG2wDq8Eu33iH9aQKa7IvLQ==
 
+"@types/dom-screen-wake-lock@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/dom-screen-wake-lock/-/dom-screen-wake-lock-1.0.0.tgz#c06e415fca0afb5a6e727b900f3cb8ba3993d130"
+  integrity sha512-3o5jkfJsuhFcKj2EZ3PiEoiQQbB3J/nffsXJBKtyubkBHsX2siS6b4uij3ukr5xgDHsF4BaT9fHo8DneAw/YxA==
+
 "@types/domutils@*":
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/@types/domutils/-/domutils-1.7.3.tgz#890de5a79d86896e9e6a7445a43c9512e62d6f04"
@@ -2404,6 +2409,11 @@ isobject@^2.0.0:
   integrity sha1-8GVWEJaj8dou9GJy+BXIQNh+DIk=
   dependencies:
     isarray "1.0.0"
+
+isomorphic-ws@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/isomorphic-ws/-/isomorphic-ws-4.0.1.tgz#55fd4cd6c5e6491e76dc125938dd863f5cd4f2dc"
+  integrity sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==
 
 jest-worker@24.9.0:
   version "24.9.0"
@@ -4540,6 +4550,11 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
+
+ws@^7.4.4:
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.4.tgz#383bc9742cb202292c9077ceab6f6047b17f2d59"
+  integrity sha512-Qm8k8ojNQIMx7S+Zp8u/uHOx7Qazv3Yv4q68MiWWWOJhiwG5W3x7iqmRtJo8xxrciZUY4vRxUTJCKuRnF28ZZw==
 
 xml2js@^0.4.23:
   version "0.4.23"
