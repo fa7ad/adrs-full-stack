@@ -1,9 +1,7 @@
-import WebSocket from 'isomorphic-ws';
+// import WebSocket from 'isomorphic-ws';
 import { useEffect, useRef } from 'react';
 
 const alpha = 0.58;
-
-const debugServer = new WebSocket('ws://192.168.1.2:8080');
 
 type Roll = number;
 type Pitch = number;
@@ -35,7 +33,7 @@ export function useSensorMagic(callback: (triggered?: boolean) => Promise<unknow
         const finalPitch = alpha * p + (1 - alpha) * arp.current[1];
 
         if (Math.abs(finalRoll) >= 46 || Math.abs(finalPitch) >= 46) {
-          debugServer.send(JSON.stringify({ gyro: [finalRoll, finalPitch], arp, grp }));
+          // debugServer.send(JSON.stringify({ gyro: [finalRoll, finalPitch], arp, grp }));
           if (!callbackd.current) {
             arp.current = grp.current = [0, 0];
             callback(callbackd.current).then(() => {
@@ -76,7 +74,7 @@ export function useSensorMagic(callback: (triggered?: boolean) => Promise<unknow
         const finalPitch = alpha * grp.current[1] + (1 - alpha) * arp.current[1];
 
         if (Math.abs(finalRoll) >= 46 || Math.abs(finalPitch) >= 46) {
-          debugServer.send(JSON.stringify({ accel: [finalRoll, finalPitch], arp, grp }));
+          // debugServer.send(JSON.stringify({ accel: [finalRoll, finalPitch], arp, grp }));
           if (!callbackd.current) {
             arp.current = grp.current = [0, 0];
             callback(callbackd.current).then(() => {
