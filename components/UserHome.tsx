@@ -210,9 +210,7 @@ function UserHome() {
             name='area'
             id='area'
             labelId='area-select-label'
-            onChange={evt => {
-              setArea(evt.target.value as string);
-            }}
+            onChange={evt => setArea(evt.target.value as string)}
             value={area}
             label='Area'
           >

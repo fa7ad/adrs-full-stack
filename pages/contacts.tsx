@@ -227,7 +227,7 @@ const Contacts: NextPage<{} & Unpromise<ReturnType<typeof getInitialProps>>> = f
               )}
               {isSubmitting && <LinearProgress />}
               <br />
-              {(touched.newContact || touched.contacts) && (
+              {(values.newContact.editing || touched.contacts) && (
                 <Button
                   variant='contained'
                   color='primary'
