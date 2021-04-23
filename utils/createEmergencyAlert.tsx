@@ -8,9 +8,8 @@ export function createEmergencyAlert(
   contacts?: ContactsData[],
   locationHelpers?: { position: Tuple<number, number> | null; trigger: () => unknown }
 ) {
-  return (isVisible?: boolean) => {
+  return () => {
     locationHelpers?.trigger();
-    if (isVisible) return Promise.resolve({});
     return Alert.fire({
       timer: 20e3,
       icon: 'warning',

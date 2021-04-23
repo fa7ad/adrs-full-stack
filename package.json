@@ -70,6 +70,7 @@
     "@types/react-html-parser": "^2.0.1",
     "@types/sanitize-html": "^1.27.1",
     "@types/w3c-generic-sensor": "^1.0.3",
+    "@types/ws": "^7.4.1",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
     "eslint": "^7.20.0",

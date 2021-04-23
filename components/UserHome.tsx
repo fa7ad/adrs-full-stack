@@ -137,7 +137,7 @@ function UserHome() {
 
   useEffect(() => {
     requestSensorPermissions().then(permitted => {
-      if (permitted.accel && permitted.gyro) return;
+      if (permitted.accl && permitted.gyro) return;
       alert('Gyroscope and Accelerometer access are required for this app!');
     });
   }, [requestSensorPermissions]);
