@@ -80,6 +80,7 @@ function UserHome() {
     nidNumber: '',
     dob: undefined as string | undefined
   });
+  const [triggerShow, setTriggerShow] = useState(false);
   const [wakeLock, setWakeLock] = useState(false);
   const [contacts, setContacts] = useState<ExistingContact[]>([]);
   const { area, setArea, areas, policeInfo, phoneNums } = useDmpData();
@@ -90,11 +91,9 @@ function UserHome() {
     requestPermission: requestGeoPermission
   } = useGeolocation();
   const showAccidentAlert = createEmergencyAlert(phoneNums, contacts, { trigger: triggerGeo, position: geoPos });
-  const alertHandler = () => {
-    const trigger = triggerGeo
-    const position = geoPos;
-    return createEmergencyAlert(phoneNums, contacts, { trigger, position })();
-  }
+  const alertHandler = async () => {
+    setTriggerShow(true);
+  };
 
   const { requestPermissions: requestSensorPermissions } = useSensorMagic(alertHandler);
 
@@ -104,8 +103,14 @@ function UserHome() {
 
   const handleManualReport: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.preventDefault();
-    showAccidentAlert();
+    setTriggerShow(true);
   };
+
+  useEffect(() => {
+    if (triggerShow) {
+      showAccidentAlert().then(() => setTriggerShow(false));
+    }
+  }, [showAccidentAlert, triggerShow]);
 
   useEffect(() => {
     document.body.addEventListener('keypress', handleKeyPress);
