@@ -90,7 +90,11 @@ function UserHome() {
     requestPermission: requestGeoPermission
   } = useGeolocation();
   const showAccidentAlert = createEmergencyAlert(phoneNums, contacts, { trigger: triggerGeo, position: geoPos });
-  const alertHandler = () => showAccidentAlert();
+  const alertHandler = () => {
+    const trigger = triggerGeo
+    const position = geoPos;
+    return createEmergencyAlert(phoneNums, contacts, { trigger, position })();
+  }
 
   const { requestPermissions: requestSensorPermissions } = useSensorMagic(alertHandler);
 
