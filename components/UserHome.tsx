@@ -90,7 +90,9 @@ function UserHome() {
     requestPermission: requestGeoPermission
   } = useGeolocation();
   const showAccidentAlert = createEmergencyAlert(phoneNums, contacts, { trigger: triggerGeo, position: geoPos });
-  const { requestPermissions: requestSensorPermissions } = useSensorMagic(showAccidentAlert);
+  const alertHandler = () => showAccidentAlert();
+
+  const { requestPermissions: requestSensorPermissions } = useSensorMagic(alertHandler);
 
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === '+') showAccidentAlert();
